@@ -2,29 +2,35 @@ import React from "react";
 import { Book as BookModel } from "../../models/book";
 import { Book } from "../../components/Book/Book";
 import { getAllBook } from "../../services/bookServices";
+import { StyledBookWrapper, StyledHome } from "./Home.style";
+import { useRequest } from "../../utils/useRequest";
 
 export interface HomeRouteProps {}
 
 export const HomeRoute: React.FunctionComponent<HomeRouteProps> = () => {
-  const [books, setBooks] = React.useState<BookModel[]>([]);
+  const {
+    data: books,
+    setData: setBooks,
+    makingRequest: fetchingBooks,
+    makeRequest: fetchBooks,
+  } = useRequest<BookModel[]>();
 
   React.useEffect(() => {
-    getBooks();
+    fetchBooks({
+      request: getAllBook,
+      onSuccess: setBooks,
+      onError: () => {},
+    });
   }, []);
 
-  const getBooks = async () => {
-    try {
-      const result = await getAllBook();
-      setBooks(result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  if (books.length === 0) return <div>Loading...</div>;
+  if (fetchingBooks || !books) return <div>Loading...</div>;
   return (
-    <>
-      <Book title={books[0].name} />
-    </>
+    <StyledHome>
+      {books.map(({ id, name }) => (
+        <StyledBookWrapper key={id}>
+          <Book title={name} bookId={id} />
+        </StyledBookWrapper>
+      ))}
+    </StyledHome>
   );
 };

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const StyledBook = styled.div`
   width: 130px;
-  height: 220px;
+  height: auto;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -20,4 +20,8 @@ export const StyledBookTitleWrapper = styled.div`
   justify-content: center;
 `;
 
-export const StyledbookTitle = styled.span``;
+export const StyledbookTitle = styled.span`
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+`;

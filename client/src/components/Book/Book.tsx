@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router";
 import {
   StyledBook,
   StyledBookImage,
@@ -9,14 +10,22 @@ import {
 export interface BookProps {
   coverImage?: string;
   title: string;
+  bookId: number;
 }
 
 export const Book: React.FunctionComponent<BookProps> = ({
   coverImage,
   title,
+  bookId,
 }) => {
+  const router = useHistory();
+
+  const bookClicked = () => {
+    router.push(`detail/${bookId}`);
+  };
+
   return (
-    <StyledBook>
+    <StyledBook onClick={bookClicked}>
       <StyledBookImage
         src={
           coverImage ??

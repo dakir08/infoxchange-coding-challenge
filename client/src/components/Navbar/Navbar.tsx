@@ -6,7 +6,7 @@ export interface NavbarProps {}
 export const Navbar: React.FunctionComponent<NavbarProps> = () => {
   return (
     <StyledNavbar>
-      <h1>Hello World</h1>
+      <span>Nav</span>
     </StyledNavbar>
   );
 };
