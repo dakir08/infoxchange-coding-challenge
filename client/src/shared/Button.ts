@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css, Interpolation, Theme } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
   DEFAULT_BORDER_RADIUS,
@@ -21,7 +21,7 @@ export const ButtonBaseStyle = css`
 `;
 
 interface StyledButtonProps {
-  padding?: string;
+  css?: Interpolation<Theme>;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -29,7 +29,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
   background-color: #3498db;
   color: #ecf0f1;
   border-radius: ${DEFAULT_BORDER_RADIUS}px;
-  padding: ${({ padding }) => padding ?? "1rem 0.5rem"};
+  padding: 0.2rem 1rem;
 
   &:hover {
     background-color: #2980b9;
@@ -37,4 +37,5 @@ export const StyledButton = styled.button<StyledButtonProps>`
   &:focus {
     outline: none;
   }
+  ${({ css }) => css};
 `;

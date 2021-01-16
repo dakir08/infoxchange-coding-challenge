@@ -6,11 +6,11 @@ import { globalStyle } from "./style/global";
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Global styles={globalStyle} />
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );

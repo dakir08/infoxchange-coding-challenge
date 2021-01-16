@@ -3,11 +3,7 @@ import { Route, Switch } from "react-router";
 import { DetailRoute } from "../../Routes/Detail/Detail";
 import { HomeRoute } from "../../Routes/Home/Home";
 import { Navbar } from "../Navbar/Navbar";
-import {
-  StyledApp,
-  StyledAppContainer,
-  StyledNavbarWrapper,
-} from "./App.style";
+import { StyledApp, StyledAppContainer } from "./App.style";
 
 export interface AppProps {}
 
