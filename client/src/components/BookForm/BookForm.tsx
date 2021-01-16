@@ -1,3 +1,4 @@
+import { toNamespacedPath } from "path";
 import React from "react";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
@@ -5,6 +6,7 @@ import { StyledButton } from "../../shared/Button";
 import { StyledOption, StyledSelect } from "../../shared/Select";
 import { StyledTextField } from "../../shared/TextField";
 import { InputLabel } from "../InputLabel/InputLabel";
+import { toast } from "react-hot-toast";
 
 export interface BookFormProps {
   authors: Author[];
@@ -19,6 +21,10 @@ export const BookForm: React.FunctionComponent<BookFormProps> = ({
 
   const handleSubmitBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!newBook?.author) {
+      return toast.error("please select author!");
+    }
 
     onSubmit(newBook!);
   };

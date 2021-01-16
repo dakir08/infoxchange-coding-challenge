@@ -3,7 +3,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
-import { createNewAuthor, getAllAuthor } from "../../services/authorServices";
+import { createNewAuthor } from "../../services/authorServices";
 import { createNewBook } from "../../services/bookServices";
 import { StyledButton } from "../../shared/Button";
 import { useRequest } from "../../utils/useRequest";
@@ -32,6 +32,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
   const history = useHistory();
   const {
     state: { authors },
+    actions: { createBook, createAuthor },
   } = useStoreContext();
 
   const handleButtonClicked = (type: PortalChildren) => {
@@ -46,6 +47,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
       onSuccess: () => {
         toast.success("create book successfully!");
         setOpenPortal(false);
+        createBook(book);
       },
     });
   };
@@ -57,6 +59,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
       onSuccess: () => {
         toast.success("create author successfully!");
         setOpenPortal(false);
+        createAuthor(author);
       },
     });
   };
@@ -68,7 +71,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
       case "author":
         return <AuthorForm onSubmit={submitNewAuthor} />;
       case "modify author":
-        return <>modifyt</>;
+        return <>modify</>;
     }
   };
 

@@ -10,6 +10,12 @@ export const HomeRoute: React.FunctionComponent<HomeRouteProps> = () => {
     state: { books },
   } = useStoreContext();
 
+  const { actions } = useStoreContext();
+
+  React.useEffect(() => {
+    actions.fetchBooks();
+  }, []);
+
   return (
     <StyledHome>
       {books.map(({ id, name }) => (

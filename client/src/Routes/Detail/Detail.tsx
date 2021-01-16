@@ -2,9 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useHistory, useParams } from "react-router";
 import { Portal } from "../../components/Portal/Portal";
-import { Author } from "../../models/author";
 import { Book } from "../../models/book";
-import { getAllAuthor } from "../../services/authorServices";
 import {
   deleteBookById,
   getBookById,
@@ -20,6 +18,7 @@ import {
   StyledDetailRightContainer,
 } from "./Detail.style";
 import { toast } from "react-hot-toast";
+import { useStoreContext } from "../../store/StoreContext";
 
 export interface DetailRouteProps {}
 
@@ -28,35 +27,36 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
   const history = useHistory();
   const {
     data: book,
+    setData: setBook,
     makingRequest,
     makeRequest,
-    setData: setBook,
   } = useRequest<Book>();
+  const {
+    state: { authors, books },
+  } = useStoreContext();
   const [editMode, setEditMode] = React.useState(false);
-  const [authors, setAuthors] = React.useState<Author[]>();
   const [openPortal, setOpenPortal] = React.useState(false);
   const [deletedBook, setDeletedBook] = React.useState(false);
 
   React.useEffect(() => {
-    makeRequest({
-      request: () => getBookById(Number(params.id)),
-      onSuccess: setBook,
-      onError: () => {},
-    });
-
-    makeRequest({
-      request: getAllAuthor,
-      onSuccess: setAuthors,
-      onError: () => {},
-    });
+    const existingBook = books.find((book) => book.id === Number(params.id));
+    if (existingBook) {
+      setBook(existingBook);
+    } else {
+      makeRequest({
+        request: () => getBookById(Number(params.id)),
+        onSuccess: setBook,
+        onError: () => {},
+      });
+    }
   }, []);
 
-  const handleDeleteBook = () => {
+  const deleteBook = () => {
     if (!book) return;
     makeRequest({
       request: () => deleteBookById(book.id!),
       onSuccess: () => setDeletedBook(true),
-      onError: () => toast.error("delete book error :(, please try again"),,
+      onError: () => toast.error("delete book error :(, please try again"),
     });
   };
 
@@ -117,7 +117,7 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
         css={css`
           margin-bottom: 0.5rem;
         `}
-        onClick={handleDeleteBook}
+        onClick={deleteBook}
       >
         Yes
       </StyledButton>

@@ -19,9 +19,15 @@ export const initialState: State = {
 
 export const reducer = (state: State = initialState, action: any) => {
   switch (action.type) {
-    case ActionTypes.GET_BOOKS:
+    case ActionTypes.GET_BOOKS_SUCCESS:
       return { ...state, books: action.payload as Book[] };
-    case ActionTypes.GET_AUTHORS:
+    case ActionTypes.GET_AUTHORS_SUCCESS:
       return { ...state, authors: action.payload as Author[] };
+    case ActionTypes.CREATE_NEW_BOOK:
+      return { ...state, books: [...state.books, action.payload] };
+    case ActionTypes.CREATE_NEW_AUTHOR:
+      return { ...state, authors: [...state.authors, action.payload] };
+    default:
+      return state;
   }
 };

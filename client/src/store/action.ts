@@ -4,18 +4,32 @@ import { ActionTypes } from "./actionTypes";
 import { Action, State } from "./reducers";
 
 export interface Actions {
-  fetchBooks: (data: Book[]) => void;
-  fetchAuthors: (data: Author[]) => void;
+  fetchBooks: () => void;
+  fetchAuthors: () => void;
+  createBook: (data: Book) => void;
+  createAuthor: (data: Author) => void;
 }
 
 export const useActions = (
   state: State,
   dispatch: (action: Action) => void
 ): Actions => ({
-  fetchBooks: (data: Book[]) => {
-    dispatch({ type: ActionTypes.GET_BOOKS, payload: data });
+  fetchBooks: () => {
+    dispatch({ type: ActionTypes.GET_BOOKS });
   },
-  fetchAuthors: (data: Author[]) => {
-    dispatch({ type: ActionTypes.GET_AUTHORS, payload: data });
+  fetchAuthors: () => {
+    dispatch({ type: ActionTypes.GET_AUTHORS });
+  },
+  createBook: (data) => {
+    dispatch({
+      type: ActionTypes.CREATE_NEW_BOOK,
+      payload: { ...data, id: state.books.length + 1 } as Book,
+    });
+  },
+  createAuthor: (data) => {
+    dispatch({
+      type: ActionTypes.CREATE_NEW_AUTHOR,
+      payload: { ...data, id: state.authors.length + 1 } as Author,
+    });
   },
 });
