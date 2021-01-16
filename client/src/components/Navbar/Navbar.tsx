@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
 import { createNewAuthor, getAllAuthor } from "../../services/authorServices";
@@ -16,8 +16,9 @@ import {
   StyledNavbarRightContainer,
 } from "./Navbar.style";
 import { toast } from "react-hot-toast";
+import { useStoreContext } from "../../store/StoreContext";
 
-type PortalChildren = "book" | "author";
+type PortalChildren = "book" | "author" | "modify author";
 
 export interface NavbarProps {}
 
@@ -27,17 +28,11 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
     portalChildrenType,
     setPortalChildrenType,
   ] = React.useState<PortalChildren>();
-  const { data: authors, setData: setAuthors, makeRequest } = useRequest<
-    Author[]
-  >();
-
-  React.useEffect(() => {
-    makeRequest({
-      request: getAllAuthor,
-      onError: () => {},
-      onSuccess: setAuthors,
-    });
-  }, []);
+  const { makeRequest } = useRequest<Author[]>();
+  const history = useHistory();
+  const {
+    state: { authors },
+  } = useStoreContext();
 
   const handleButtonClicked = (type: PortalChildren) => {
     setOpenPortal(true);
@@ -72,6 +67,8 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
         return <BookForm authors={authors!} onSubmit={submitNewBook} />;
       case "author":
         return <AuthorForm onSubmit={submitNewAuthor} />;
+      case "modify author":
+        return <>modifyt</>;
     }
   };
 
@@ -95,6 +92,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
           <StyledButton
             css={css`
               background-color: #2ecc71;
+              margin-right: 1rem;
               &:hover {
                 background-color: #27ae60;
               }
@@ -102,6 +100,18 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
             onClick={() => handleButtonClicked("author")}
           >
             Add author
+          </StyledButton>
+          <StyledButton
+            css={css`
+              background-color: rgba(241, 196, 15, 1);
+              color: rgba(44, 62, 80, 1);
+              &:hover {
+                background-color: rgba(243, 156, 18, 1);
+              }
+            `}
+            onClick={() => history.push("/author")}
+          >
+            Author Page
           </StyledButton>
         </StyledNavbarRightContainer>
       </StyledNavbar>

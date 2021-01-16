@@ -32,6 +32,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
   color: #ecf0f1;
   border-radius: ${DEFAULT_BORDER_RADIUS}px;
   padding: 0.2rem 1rem;
+  text-transform: capitalize;
 
   &:hover {
     background-color: ${({ color = "primary" }) =>
