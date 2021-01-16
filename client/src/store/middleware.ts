@@ -28,21 +28,23 @@ export const applyMiddleware = (dispatch: (action: Action) => void) => (
         );
     case ActionTypes.DELETE_AUTHOR:
       return deleteAuthorById(action.payload)
-        .then((_) =>
+        .then((_) => {
           dispatch({
             type: ActionTypes.DELETE_AUTHOR_SUCCESS,
             payload: action.payload,
-          })
-        )
+          });
+          toast.success("delete author success");
+        })
         .catch((_) => toast.error("cannot delete author"));
     case ActionTypes.UPDATE_AUTHOR:
       return modifyAuthorById(action.payload.id, action.payload)
-        .then((_) =>
+        .then((_) => {
           dispatch({
             type: ActionTypes.UPDATE_AUTHOR_SUCCESS,
             payload: action.payload,
-          })
-        )
+          });
+          toast.success("update author success");
+        })
         .catch((_) => toast.error("cannot delete author"));
     default:
       dispatch(action);

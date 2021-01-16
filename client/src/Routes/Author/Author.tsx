@@ -4,6 +4,7 @@ import { Author } from "../../models/author";
 import { StyledButton } from "../../shared/Button";
 import { StyledTextField } from "../../shared/TextField";
 import { useStoreContext } from "../../store/StoreContext";
+import { StyledAuthorTable, StyledTableHead } from "./Author.style";
 
 export interface AuthorRouteProps {}
 
@@ -49,23 +50,15 @@ export const AuthorRoute: React.FunctionComponent<AuthorRouteProps> = () => {
   return (
     <>
       <h3>List Author</h3>
-      <table
-        css={css`
-          width: 100%;
-        `}
-      >
-        <thead
-          css={css`
-            width: 100%;
-          `}
-        >
+      <StyledAuthorTable>
+        <StyledTableHead>
           <tr>
             <th>First name</th>
             <th>Last name</th>
             <th>Update Author</th>
-            <th>RemoveAuthor</th>
+            <th>Remove Author</th>
           </tr>
-        </thead>
+        </StyledTableHead>
         <tbody>
           {authors.map(({ firstName, lastName, id }) => (
             <tr key={id}>
@@ -85,14 +78,18 @@ export const AuthorRoute: React.FunctionComponent<AuthorRouteProps> = () => {
                 )}
               </td>
               <td>
-                <StyledButton color="error" onClick={() => removeAuthor(id!)}>
+                <StyledButton
+                  color="error"
+                  onClick={() => removeAuthor(id!)}
+                  disabled={editMode !== -1}
+                >
                   Remove
                 </StyledButton>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </StyledAuthorTable>
     </>
   );
 };

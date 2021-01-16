@@ -1,6 +1,7 @@
-import { css } from "@emotion/react";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/react";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
 import { createNewAuthor } from "../../services/authorServices";
@@ -11,14 +12,19 @@ import { AuthorForm } from "../AuthorForm/AuthorForm";
 import { BookForm } from "../BookForm/BookForm";
 import { Portal } from "../Portal/Portal";
 import {
+  NavbarNavActiveItem,
   StyledNavbar,
   StyledNavbarLeftContainer,
+  StyledNavbarNav,
+  StyledNavbarNavHeader,
+  StyledNavbarNavItem,
+  StyledNavbarNavItemLink,
   StyledNavbarRightContainer,
 } from "./Navbar.style";
 import { toast } from "react-hot-toast";
 import { useStoreContext } from "../../store/StoreContext";
 
-type PortalChildren = "book" | "author" | "modify author";
+type PortalChildren = "book" | "author";
 
 export interface NavbarProps {}
 
@@ -30,6 +36,8 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
   ] = React.useState<PortalChildren>();
   const { makeRequest } = useRequest<Author[]>();
   const history = useHistory();
+  const { pathname } = useLocation();
+
   const {
     state: { authors },
     actions: { createBook, createAuthor },
@@ -70,18 +78,32 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
         return <BookForm authors={authors!} onSubmit={submitNewBook} />;
       case "author":
         return <AuthorForm onSubmit={submitNewAuthor} />;
-      case "modify author":
-        return <>modify</>;
     }
   };
 
   return (
-    <>
+    <React.Fragment>
       <StyledNavbar>
         <StyledNavbarLeftContainer>
-          <Link to="/">
-            <h1>My books</h1>
-          </Link>
+          <StyledNavbarNavHeader>Book Challenge</StyledNavbarNavHeader>
+          <StyledNavbarNav>
+            <StyledNavbarNavItem>
+              <StyledNavbarNavItemLink
+                to="/"
+                css={pathname === "/" && NavbarNavActiveItem}
+              >
+                Home
+              </StyledNavbarNavItemLink>
+            </StyledNavbarNavItem>
+            <StyledNavbarNavItem>
+              <StyledNavbarNavItemLink
+                to="/author"
+                css={pathname === "/author" && NavbarNavActiveItem}
+              >
+                Author
+              </StyledNavbarNavItemLink>
+            </StyledNavbarNavItem>
+          </StyledNavbarNav>
         </StyledNavbarLeftContainer>
         <StyledNavbarRightContainer>
           <StyledButton
@@ -104,18 +126,6 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
           >
             Add author
           </StyledButton>
-          <StyledButton
-            css={css`
-              background-color: rgba(241, 196, 15, 1);
-              color: rgba(44, 62, 80, 1);
-              &:hover {
-                background-color: rgba(243, 156, 18, 1);
-              }
-            `}
-            onClick={() => history.push("/author")}
-          >
-            Author Page
-          </StyledButton>
         </StyledNavbarRightContainer>
       </StyledNavbar>
       {openPortal && (
@@ -123,6 +133,6 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
           {renderPortalChildren()}
         </Portal>
       )}
-    </>
+    </React.Fragment>
   );
 };

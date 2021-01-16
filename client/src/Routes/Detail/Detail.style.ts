@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 
 export const StyledDetail = styled.div`
   display: flex;
-  /* justify-content: center; */
   min-height: 400px;
   margin-top: 1rem;
 `;
@@ -15,7 +14,7 @@ export const StyledDetailImage = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  margin-right: 1rem;
+  margin-right: 2.5rem;
 `;
 
 export const StyledDetailRightContainer = styled.div`
