@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { books } from "../../static/data";
+import { authors, books } from "../../static/data";
 import { Book } from "./book.model";
 
 export const getAllBook = (_: Request, res: Response) => {
@@ -30,18 +30,19 @@ export const createNewBook = (req: Request, res: Response) => {
 };
 
 export const modifyBook = (req: Request, res: Response) => {
-  const modifiedBook: Book = req.body;
   const id = +req.params.id;
 
-  const modifyBookIndex = books.findIndex((book) => book.id === id);
+  const modifiedBook = books.find((book) => book.id === id);
 
-  if (modifyBookIndex === -1 || Object.keys(modifiedBook).length === 0) {
+  if (!modifiedBook) {
     return res.status(400).send({
       message: "cannot find requested or invalid requested book data",
     });
   }
 
-  books[modifyBookIndex] = { ...books[modifyBookIndex], ...modifiedBook };
+  modifiedBook.author = req.body.author;
+  modifiedBook.isbn = req.body.isbn;
+  modifiedBook.name = req.body.name;
 
   res.status(200).send({ message: "modified book" });
 };

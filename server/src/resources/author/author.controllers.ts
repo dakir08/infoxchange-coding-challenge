@@ -34,20 +34,17 @@ export const createNewAuthor = (req: Request, res: Response) => {
 
 export const modifyAuthor = (req: Request, res: Response) => {
   const id = +req.params.id;
-  const modifiedAuthor: Author = req.body;
 
-  const modifiedAuthorIndex = authors.findIndex((author) => author.id === id);
+  const modifiedAuthor = authors.find((author) => author.id === id);
 
-  if (modifiedAuthorIndex === -1 || Object.keys(modifiedAuthor).length === 0) {
+  if (!modifiedAuthor) {
     return res
       .status(400)
       .send({ message: "cannot find author or empty requested data" });
   }
 
-  authors[modifiedAuthorIndex] = {
-    ...authors[modifiedAuthorIndex],
-    ...modifiedAuthor,
-  };
+  modifiedAuthor.firstName = req.body.firstName;
+  modifiedAuthor.lastName = req.body.lastName;
 
   res.send({ message: "modified author" });
 };
