@@ -27,6 +27,18 @@ export const reducer = (state: State = initialState, action: any) => {
       return { ...state, books: [...state.books, action.payload] };
     case ActionTypes.CREATE_NEW_AUTHOR:
       return { ...state, authors: [...state.authors, action.payload] };
+    case ActionTypes.UPDATE_AUTHOR_SUCCESS:
+      const clonedAuthors = [...state.authors];
+      const authorIndex = state.authors.findIndex(
+        (author) => author.id === action.payload.id
+      );
+      clonedAuthors[authorIndex] = action.payload;
+      return { ...state, authors: clonedAuthors };
+    case ActionTypes.DELETE_AUTHOR_SUCCESS:
+      const authors = state.authors.filter(
+        (author) => author.id !== action.payload
+      );
+      return { ...state, authors };
     default:
       return state;
   }

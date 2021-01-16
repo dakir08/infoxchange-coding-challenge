@@ -8,6 +8,8 @@ export interface Actions {
   fetchAuthors: () => void;
   createBook: (data: Book) => void;
   createAuthor: (data: Author) => void;
+  updateAuthor: (data: Author) => void;
+  deleteAuthor: (id: number) => void;
 }
 
 export const useActions = (
@@ -31,5 +33,14 @@ export const useActions = (
       type: ActionTypes.CREATE_NEW_AUTHOR,
       payload: { ...data, id: state.authors.length + 1 } as Author,
     });
+  },
+  updateAuthor: (data) => {
+    dispatch({
+      type: ActionTypes.UPDATE_AUTHOR,
+      payload: data,
+    });
+  },
+  deleteAuthor: (id) => {
+    dispatch({ type: ActionTypes.DELETE_AUTHOR, payload: id });
   },
 });

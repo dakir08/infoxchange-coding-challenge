@@ -12,3 +12,14 @@ export const getAuthorById = (id: number): Promise<Author> => {
 export const createNewAuthor = (data: Author): Promise<{ message: string }> => {
   return requests.post("author", data);
 };
+
+export const modifyAuthorById = (
+  id: number,
+  data: Author
+): Promise<{ message: string }> => {
+  return requests.put(`author/${id}`, data);
+};
+
+export const deleteAuthorById = (id: number): Promise<{ message: string }> => {
+  return requests.del(`author/${id}`);
+};
