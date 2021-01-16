@@ -1,9 +1,14 @@
 import React from "react";
-import { reducer, initialState } from "./reducers";
-import { useActions } from "./action";
+import { reducer, initialState, State } from "./reducers";
+import { Actions, useActions } from "./action";
 import { applyMiddleware } from "./middleware";
 
-export const StoreContext = React.createContext({ authors: [], books: [] });
+interface Store {
+  state: State;
+  actions: Actions;
+}
+
+export const StoreContext = React.createContext<any>({});
 
 export const StoreProvider: React.FunctionComponent = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -21,7 +26,7 @@ export const StoreProvider: React.FunctionComponent = ({ children }) => {
 };
 
 export const useStoreContext = () => {
-  const context = React.useContext(StoreContext);
+  const context: Store = React.useContext(StoreContext);
   if (context === undefined) {
     throw new Error("useStoreContext must be used within a StoreProvider");
   }

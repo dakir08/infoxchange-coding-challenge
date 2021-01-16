@@ -7,7 +7,7 @@ export interface HomeRouteProps {}
 
 export const HomeRoute: React.FunctionComponent<HomeRouteProps> = () => {
   const {
-    state: { books, authors },
+    state: { books },
   } = useStoreContext();
 
   return (
