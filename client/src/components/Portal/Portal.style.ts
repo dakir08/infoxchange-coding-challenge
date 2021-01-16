@@ -24,6 +24,7 @@ export const StyledPortalChildrenContainer = styled.div`
   z-index: 5;
   background-color: white;
   display: flex;
+  flex-direction: column;
   padding: 2rem;
   border-radius: ${DEFAULT_BORDER_RADIUS}px;
   position: relative;

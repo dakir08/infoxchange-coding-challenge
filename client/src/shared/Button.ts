@@ -22,17 +22,20 @@ export const ButtonBaseStyle = css`
 
 interface StyledButtonProps {
   css?: Interpolation<Theme>;
+  color?: "primary" | "error";
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
   ${ButtonBaseStyle};
-  background-color: #3498db;
+  background-color: ${({ color = "primary" }) =>
+    color === "primary" ? "rgba(52, 152, 219,1.0)" : "rgba(231, 76, 60,1.0)"};
   color: #ecf0f1;
   border-radius: ${DEFAULT_BORDER_RADIUS}px;
   padding: 0.2rem 1rem;
 
   &:hover {
-    background-color: #2980b9;
+    background-color: ${({ color = "primary" }) =>
+      color === "primary" ? "rgba(41, 128, 185,1.0)" : "rgba(192, 57, 43,1.0)"};
   }
   &:focus {
     outline: none;

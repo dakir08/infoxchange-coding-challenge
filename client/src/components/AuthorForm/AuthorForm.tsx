@@ -1,27 +1,23 @@
 import React from "react";
 import { Author } from "../../models/author";
-import { createNewAuthor } from "../../services/authorServices";
 import { StyledButton } from "../../shared/Button";
 import { StyledTextField } from "../../shared/TextField";
-import { useRequest } from "../../utils/useRequest";
 import { InputLabel } from "../InputLabel/InputLabel";
 
-export interface AuthorFormProps {}
+export interface AuthorFormProps {
+  onSubmit: (author: Author) => void;
+}
 
-export const AuthorForm: React.FunctionComponent<AuthorFormProps> = () => {
-  const { data, setData, makeRequest, makingRequest } = useRequest<Author>();
+export const AuthorForm: React.FunctionComponent<AuthorFormProps> = ({
+  onSubmit,
+}) => {
+  const [newAuthor, setNewAuthor] = React.useState<Author>();
 
   const handleFormSubmitted = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    makeRequest({
-      request: () => createNewAuthor(data!),
-      onError: () => {},
-      onSuccess: () => {},
-    });
+    onSubmit(newAuthor!);
   };
-
-  if (makingRequest) return <div>loading...</div>;
 
   return (
     <form onSubmit={handleFormSubmitted}>
@@ -33,9 +29,9 @@ export const AuthorForm: React.FunctionComponent<AuthorFormProps> = () => {
           <StyledTextField
             id={id}
             required
-            value={data?.firstName ?? ""}
+            value={newAuthor?.firstName ?? ""}
             onChange={(e) =>
-              setData({ ...data, firstName: e.currentTarget.value })
+              setNewAuthor({ ...newAuthor, firstName: e.currentTarget.value })
             }
           />
         )}
@@ -47,9 +43,9 @@ export const AuthorForm: React.FunctionComponent<AuthorFormProps> = () => {
           <StyledTextField
             id={id}
             required
-            value={data?.lastName ?? ""}
+            value={newAuthor?.lastName ?? ""}
             onChange={(e) =>
-              setData({ ...data, lastName: e.currentTarget.value })
+              setNewAuthor({ ...newAuthor, lastName: e.currentTarget.value })
             }
           />
         )}

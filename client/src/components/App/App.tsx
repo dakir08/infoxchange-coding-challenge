@@ -4,6 +4,7 @@ import { DetailRoute } from "../../Routes/Detail/Detail";
 import { HomeRoute } from "../../Routes/Home/Home";
 import { Navbar } from "../Navbar/Navbar";
 import { StyledApp, StyledAppContainer } from "./App.style";
+import { Toaster } from "react-hot-toast";
 
 export interface AppProps {}
 
@@ -22,6 +23,7 @@ export const App: React.FunctionComponent<AppProps> = () => {
           </Route>
         </Switch>
       </StyledAppContainer>
+      <Toaster position="bottom-left" reverseOrder={false} />
     </StyledApp>
   );
 };

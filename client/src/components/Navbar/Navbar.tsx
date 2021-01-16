@@ -1,6 +1,12 @@
 import { css } from "@emotion/react";
 import React from "react";
+import { Link } from "react-router-dom";
+import { Author } from "../../models/author";
+import { Book } from "../../models/book";
+import { createNewAuthor, getAllAuthor } from "../../services/authorServices";
+import { createNewBook } from "../../services/bookServices";
 import { StyledButton } from "../../shared/Button";
+import { useRequest } from "../../utils/useRequest";
 import { AuthorForm } from "../AuthorForm/AuthorForm";
 import { BookForm } from "../BookForm/BookForm";
 import { Portal } from "../Portal/Portal";
@@ -9,6 +15,7 @@ import {
   StyledNavbarLeftContainer,
   StyledNavbarRightContainer,
 } from "./Navbar.style";
+import { toast } from "react-hot-toast";
 
 type PortalChildren = "book" | "author";
 
@@ -20,18 +27,51 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
     portalChildrenType,
     setPortalChildrenType,
   ] = React.useState<PortalChildren>();
+  const { data: authors, setData: setAuthors, makeRequest } = useRequest<
+    Author[]
+  >();
+
+  React.useEffect(() => {
+    makeRequest({
+      request: getAllAuthor,
+      onError: () => {},
+      onSuccess: setAuthors,
+    });
+  }, []);
 
   const handleButtonClicked = (type: PortalChildren) => {
     setOpenPortal(true);
     setPortalChildrenType(type);
   };
 
+  const submitNewBook = (book: Book) => {
+    makeRequest({
+      request: () => createNewBook(book),
+      onError: () => toast.error("cannot create new book"),
+      onSuccess: () => {
+        toast.success("create book successfully!");
+        setOpenPortal(false);
+      },
+    });
+  };
+
+  const submitNewAuthor = (author: Book) => {
+    makeRequest({
+      request: () => createNewAuthor(author),
+      onError: () => toast.error("cannot create new author"),
+      onSuccess: () => {
+        toast.success("create author successfully!");
+        setOpenPortal(false);
+      },
+    });
+  };
+
   const renderPortalChildren = () => {
     switch (portalChildrenType) {
       case "book":
-        return <BookForm />;
+        return <BookForm authors={authors!} onSubmit={submitNewBook} />;
       case "author":
-        return <AuthorForm />;
+        return <AuthorForm onSubmit={submitNewAuthor} />;
     }
   };
 
@@ -39,7 +79,9 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
     <>
       <StyledNavbar>
         <StyledNavbarLeftContainer>
-          <span>My books</span>
+          <Link to="/">
+            <h1>My books</h1>
+          </Link>
         </StyledNavbarLeftContainer>
         <StyledNavbarRightContainer>
           <StyledButton

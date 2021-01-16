@@ -1,42 +1,27 @@
 import React from "react";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
-import { getAllAuthor } from "../../services/authorServices";
-import { createNewBook } from "../../services/bookServices";
 import { StyledButton } from "../../shared/Button";
 import { StyledOption, StyledSelect } from "../../shared/Select";
 import { StyledTextField } from "../../shared/TextField";
-import { useRequest } from "../../utils/useRequest";
 import { InputLabel } from "../InputLabel/InputLabel";
 
-export interface BookFormProps {}
+export interface BookFormProps {
+  authors: Author[];
+  onSubmit: (book: Book) => void;
+}
 
-export const BookForm: React.FunctionComponent<BookFormProps> = () => {
-  const {
-    data: authors,
-    setData: setAuthors,
-    makeRequest,
-    makingRequest,
-  } = useRequest<Author[]>();
+export const BookForm: React.FunctionComponent<BookFormProps> = ({
+  authors,
+  onSubmit,
+}) => {
   const [newBook, setNewBook] = React.useState<Book>();
 
   const handleSubmitBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    makeRequest({
-      request: () => createNewBook(newBook!),
-      onError: () => {},
-      onSuccess: () => {},
-    });
+    onSubmit(newBook!);
   };
-
-  React.useEffect(() => {
-    makeRequest({
-      request: getAllAuthor,
-      onError: () => {},
-      onSuccess: setAuthors,
-    });
-  }, []);
 
   const changedAuthor = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = e.currentTarget.value;
@@ -45,8 +30,6 @@ export const BookForm: React.FunctionComponent<BookFormProps> = () => {
 
     setNewBook({ ...newBook, author });
   };
-
-  if (makingRequest) return <div>Loading...</div>;
 
   return (
     <form onSubmit={handleSubmitBook}>
