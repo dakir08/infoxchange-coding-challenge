@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { useBook } from "./Book.logic";
 import {
   StyledBook,
@@ -7,6 +6,7 @@ import {
   StyledbookTitle,
   StyledBookTitleWrapper,
 } from "./Book.style";
+import BookCoverImage from "../../../public/book_placeholder.png";
 
 export interface BookProps {
   coverImage?: string;
@@ -25,13 +25,7 @@ export const Book: React.FunctionComponent<BookProps> = ({
 
   return (
     <StyledBook onClick={bookClicked}>
-      <StyledBookImage
-        src={
-          coverImage ??
-          "https://s3-us-west-2.amazonaws.com/s.cdpn.io/387928/book%20placeholder.png"
-        }
-        alt="book cover"
-      />
+      <StyledBookImage src={coverImage ?? BookCoverImage} alt="book cover" />
       <StyledBookTitleWrapper>
         <StyledbookTitle>{title}</StyledbookTitle>
       </StyledBookTitleWrapper>

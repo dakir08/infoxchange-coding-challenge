@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import BookCoverImage from "../../../public/book_placeholder.png";
 
 export const StyledDetail = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const StyledDetail = styled.div`
 export const StyledDetailImage = styled.div`
   width: 30%;
 
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/387928/book%20placeholder.png");
+  background-image: url(${BookCoverImage});
   background-color: #111111;
   background-repeat: no-repeat;
   background-size: cover;
