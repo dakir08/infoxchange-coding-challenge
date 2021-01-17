@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from "@emotion/react";
 import React from "react";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
@@ -21,7 +23,13 @@ export const BookForm: React.FunctionComponent<BookFormProps> = (props) => {
 
   return (
     <form onSubmit={handleSubmitBook}>
-      <h3>Add new book</h3>
+      <h3
+        css={css`
+          margin-bottom: 1rem;
+        `}
+      >
+        Add new book
+      </h3>
       <InputLabel
         id="name"
         labelName="book name:"

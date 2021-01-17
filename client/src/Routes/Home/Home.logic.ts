@@ -8,6 +8,7 @@ export const useHome = () => {
   } = useStoreContext();
 
   React.useEffect(() => {
+    if (books.length > 0) return;
     fetchBooks();
   }, []);
 
