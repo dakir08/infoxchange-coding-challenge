@@ -1,20 +1,14 @@
 import React from "react";
 import { Book } from "../../components/Book/Book";
+import { useHome } from "./Home.logic";
 import { StyledBookWrapper, StyledHome } from "./Home.style";
-import { useStoreContext } from "../../store/StoreContext";
 
 export interface HomeRouteProps {}
 
 export const HomeRoute: React.FunctionComponent<HomeRouteProps> = () => {
   const {
-    state: { books },
-  } = useStoreContext();
-
-  const { actions } = useStoreContext();
-
-  React.useEffect(() => {
-    actions.fetchBooks();
-  }, []);
+    models: { books },
+  } = useHome();
 
   return (
     <StyledHome>

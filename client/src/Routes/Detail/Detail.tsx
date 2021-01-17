@@ -1,94 +1,53 @@
 import { css } from "@emotion/react";
 import React from "react";
-import { useHistory, useParams } from "react-router";
 import { Portal } from "../../components/Portal/Portal";
-import { Book } from "../../models/book";
-import {
-  deleteBookById,
-  getBookById,
-  modifyBookById,
-} from "../../services/bookServices";
 import { StyledButton } from "../../shared/Button";
 import { StyledOption, StyledSelect } from "../../shared/Select";
 import { StyledTextField } from "../../shared/TextField";
-import { useRequest } from "../../utils/useRequest";
+import { useDetail } from "./Detail.logic";
 import {
   StyledDetail,
   StyledDetailImage,
   StyledDetailRightContainer,
 } from "./Detail.style";
-import { toast } from "react-hot-toast";
-import { useStoreContext } from "../../store/StoreContext";
 
 export interface DetailRouteProps {}
 
 export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
-  const params = useParams<{ id: string }>();
-  const history = useHistory();
   const {
-    data: book,
-    setData: setBook,
-    makingRequest,
-    makeRequest,
-  } = useRequest<Book>();
-  const {
-    state: { authors, books },
-  } = useStoreContext();
-  const [editMode, setEditMode] = React.useState(false);
-  const [openPortal, setOpenPortal] = React.useState(false);
-  const [deletedBook, setDeletedBook] = React.useState(false);
-
-  React.useEffect(() => {
-    const existingBook = books.find((book) => book.id === Number(params.id));
-    if (existingBook) {
-      setBook(existingBook);
-    } else {
-      makeRequest({
-        request: () => getBookById(Number(params.id)),
-        onSuccess: setBook,
-        onError: () => {},
-      });
-    }
-  }, []);
-
-  const deleteBook = () => {
-    if (!book) return;
-    makeRequest({
-      request: () => deleteBookById(book.id!),
-      onSuccess: () => setDeletedBook(true),
-      onError: () => toast.error("delete book error :(, please try again"),
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!book) return;
-
-    makeRequest({
-      request: () => modifyBookById(book.id!, book),
-      onError: () => toast.error("modify book error :(, please try again"),
-      onSuccess: () => toast.success("modify book success"),
-    });
-  };
-
-  const handleClosePortal = () => setOpenPortal(false);
+    models: {
+      authors,
+      book,
+      editMode,
+      openPortal,
+      history,
+      makingRequest,
+      deletedBook,
+    },
+    operators: {
+      setBook,
+      closePortal,
+      deleteBook,
+      handleSubmit,
+      setOpenPortal,
+      setEditMode,
+      changeSelectValue,
+    },
+  } = useDetail();
 
   const renderBookDetailWithEditableSelect = () => {
-    const handleChangeSelectValue = (
-      e: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-      const authorId = e.currentTarget.value;
-      const author = authors?.find((author) => author.id === Number(authorId));
-
-      setBook({ ...book, author });
-    };
+    const renderAuthorName = () =>
+      !author?.firstName && !author?.lastName
+        ? "No Author"
+        : `${author?.firstName} ${author?.lastName}`;
 
     return editMode ? (
       <StyledSelect
-        onChange={handleChangeSelectValue}
+        onChange={changeSelectValue}
         required
-        defaultValue={book?.author?.id}
+        defaultValue={
+          book?.author?.id && author?.firstName ? book.author.id : "default"
+        }
       >
         <StyledOption disabled value="default">
           Select Author
@@ -101,7 +60,7 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
         ))}
       </StyledSelect>
     ) : (
-      `${author?.firstName} ${author?.lastName}`
+      renderAuthorName()
     );
   };
 
@@ -121,7 +80,7 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
       >
         Yes
       </StyledButton>
-      <StyledButton onClick={handleClosePortal}>No</StyledButton>
+      <StyledButton onClick={closePortal}>No</StyledButton>
     </>
   );
 
@@ -195,7 +154,7 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
         </StyledDetail>
       </form>
       {openPortal && (
-        <Portal onClose={handleClosePortal}>
+        <Portal onClose={closePortal}>
           {deletedBook ? renderDeleteBookSuccess() : renderDeleteBook()}
         </Portal>
       )}

@@ -3,21 +3,17 @@ import { Author } from "../../models/author";
 import { StyledButton } from "../../shared/Button";
 import { StyledTextField } from "../../shared/TextField";
 import { InputLabel } from "../InputLabel/InputLabel";
+import { useAuthorForm } from "./AuthorForm.logic";
 
 export interface AuthorFormProps {
   onSubmit: (author: Author) => void;
 }
 
-export const AuthorForm: React.FunctionComponent<AuthorFormProps> = ({
-  onSubmit,
-}) => {
-  const [newAuthor, setNewAuthor] = React.useState<Author>();
-
-  const handleFormSubmitted = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    onSubmit(newAuthor!);
-  };
+export const AuthorForm: React.FunctionComponent<AuthorFormProps> = (props) => {
+  const {
+    models: { newAuthor },
+    operators: { handleFormSubmitted, setNewAuthor },
+  } = useAuthorForm(props);
 
   return (
     <form onSubmit={handleFormSubmitted}>

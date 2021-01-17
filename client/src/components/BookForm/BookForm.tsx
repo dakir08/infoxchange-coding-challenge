@@ -1,4 +1,3 @@
-import { toNamespacedPath } from "path";
 import React from "react";
 import { Author } from "../../models/author";
 import { Book } from "../../models/book";
@@ -6,36 +5,19 @@ import { StyledButton } from "../../shared/Button";
 import { StyledOption, StyledSelect } from "../../shared/Select";
 import { StyledTextField } from "../../shared/TextField";
 import { InputLabel } from "../InputLabel/InputLabel";
-import { toast } from "react-hot-toast";
+import { useBookForm } from "./BookForm.logic";
 
 export interface BookFormProps {
   authors: Author[];
   onSubmit: (book: Book) => void;
 }
 
-export const BookForm: React.FunctionComponent<BookFormProps> = ({
-  authors,
-  onSubmit,
-}) => {
-  const [newBook, setNewBook] = React.useState<Book>();
-
-  const handleSubmitBook = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!newBook?.author) {
-      return toast.error("please select author!");
-    }
-
-    onSubmit(newBook!);
-  };
-
-  const changedAuthor = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = e.currentTarget.value;
-
-    const author = authors?.find((author) => author.id === Number(id));
-
-    setNewBook({ ...newBook, author });
-  };
+export const BookForm: React.FunctionComponent<BookFormProps> = (props) => {
+  const { authors } = props;
+  const {
+    models: { newBook },
+    operators: { changedAuthor, handleSubmitBook, setNewBook },
+  } = useBookForm(props);
 
   return (
     <form onSubmit={handleSubmitBook}>

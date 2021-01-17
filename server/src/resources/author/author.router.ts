@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  authorsMiddleware,
   createNewAuthor,
   deleteAuthor,
   getOneAuthor,
@@ -10,6 +11,10 @@ const router = Router();
 
 router.route("/").post(createNewAuthor);
 
-router.route("/:id").get(getOneAuthor).put(modifyAuthor).delete(deleteAuthor);
+router
+  .route("/:id")
+  .get(getOneAuthor)
+  .put(authorsMiddleware, modifyAuthor)
+  .delete(authorsMiddleware, deleteAuthor);
 
 export default router;

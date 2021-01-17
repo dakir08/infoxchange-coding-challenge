@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router";
+import { useBook } from "./Book.logic";
 import {
   StyledBook,
   StyledBookImage,
@@ -18,11 +19,9 @@ export const Book: React.FunctionComponent<BookProps> = ({
   title,
   bookId,
 }) => {
-  const router = useHistory();
-
-  const bookClicked = () => {
-    router.push(`detail/${bookId}`);
-  };
+  const {
+    operators: { bookClicked },
+  } = useBook(bookId);
 
   return (
     <StyledBook onClick={bookClicked}>

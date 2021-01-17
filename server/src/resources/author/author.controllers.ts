@@ -1,6 +1,26 @@
-import { Request, Response } from "express";
-import { authors } from "../../static/data";
+import { NextFunction, Request, Response } from "express";
+import { authors, books } from "../../static/data";
 import { Author } from "./author.model";
+
+export const authorsMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = +req.params.id;
+  const modifiedBooks = books.filter((book) => book.author.id === id);
+
+  if (!modifiedBooks.length) {
+    return res.status(500);
+  }
+
+  modifiedBooks.forEach((modifiedBook) => {
+    modifiedBook.author.firstName = req.body.firstName;
+    modifiedBook.author.lastName = req.body.lastName;
+  });
+
+  next();
+};
 
 export const getAllAuthors = (_: Request, res: Response) => {
   return res.json(authors).end();

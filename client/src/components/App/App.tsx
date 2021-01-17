@@ -6,16 +6,12 @@ import { Navbar } from "../Navbar/Navbar";
 import { StyledApp, StyledAppContainer } from "./App.style";
 import { Toaster } from "react-hot-toast";
 import { AuthorRoute } from "../../Routes/Author/Author";
-import { useStoreContext } from "../../store/StoreContext";
+import { useApp } from "./App.logic";
 
 export interface AppProps {}
 
 export const App: React.FunctionComponent<AppProps> = () => {
-  const { actions } = useStoreContext();
-
-  React.useEffect(() => {
-    actions.fetchAuthors();
-  }, []);
+  useApp();
   return (
     <StyledApp>
       <Navbar />

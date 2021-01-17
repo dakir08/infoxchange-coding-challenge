@@ -1,5 +1,9 @@
 import styled from "@emotion/styled";
 
+export const StyledAuthorTableWrapper = styled.div`
+  overflow-x: auto;
+`;
+
 export const StyledAuthorTable = styled.table`
   width: 100%;
   border: 1px solid #dee2e6;

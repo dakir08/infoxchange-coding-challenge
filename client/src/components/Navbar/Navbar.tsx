@@ -1,15 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { Author } from "../../models/author";
-import { Book } from "../../models/book";
-import { createNewAuthor } from "../../services/authorServices";
-import { createNewBook } from "../../services/bookServices";
+
 import { StyledButton } from "../../shared/Button";
-import { useRequest } from "../../utils/useRequest";
-import { AuthorForm } from "../AuthorForm/AuthorForm";
-import { BookForm } from "../BookForm/BookForm";
 import { Portal } from "../Portal/Portal";
 import {
   NavbarNavActiveItem,
@@ -21,56 +14,22 @@ import {
   StyledNavbarNavItemLink,
   StyledNavbarRightContainer,
 } from "./Navbar.style";
-import { toast } from "react-hot-toast";
-import { useStoreContext } from "../../store/StoreContext";
-
-type PortalChildren = "book" | "author";
+import { AuthorForm } from "../AuthorForm/AuthorForm";
+import { BookForm } from "../BookForm/BookForm";
+import { useNavbar } from "./Navbar.logic";
 
 export interface NavbarProps {}
 
 export const Navbar: React.FunctionComponent<NavbarProps> = () => {
-  const [openPortal, setOpenPortal] = React.useState(false);
-  const [
-    portalChildrenType,
-    setPortalChildrenType,
-  ] = React.useState<PortalChildren>();
-  const { makeRequest } = useRequest<Author[]>();
-  const history = useHistory();
-  const { pathname } = useLocation();
-
   const {
-    state: { authors },
-    actions: { createBook, createAuthor },
-  } = useStoreContext();
-
-  const handleButtonClicked = (type: PortalChildren) => {
-    setOpenPortal(true);
-    setPortalChildrenType(type);
-  };
-
-  const submitNewBook = (book: Book) => {
-    makeRequest({
-      request: () => createNewBook(book),
-      onError: () => toast.error("cannot create new book"),
-      onSuccess: () => {
-        toast.success("create book successfully!");
-        setOpenPortal(false);
-        createBook(book);
-      },
-    });
-  };
-
-  const submitNewAuthor = (author: Book) => {
-    makeRequest({
-      request: () => createNewAuthor(author),
-      onError: () => toast.error("cannot create new author"),
-      onSuccess: () => {
-        toast.success("create author successfully!");
-        setOpenPortal(false);
-        createAuthor(author);
-      },
-    });
-  };
+    models: { openPortal, portalChildrenType, authors, pathname },
+    operators: {
+      submitNewAuthor,
+      submitNewBook,
+      handleButtonClicked,
+      setOpenPortal,
+    },
+  } = useNavbar();
 
   const renderPortalChildren = () => {
     switch (portalChildrenType) {
