@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import BookCoverImage from "../../../public/book_placeholder.png";
 import { StyledButton } from "../../shared/Button";
