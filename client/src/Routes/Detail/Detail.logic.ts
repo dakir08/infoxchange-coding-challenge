@@ -21,6 +21,7 @@ export const useDetail = () => {
   } = useRequest<Book>();
   const {
     state: { authors, books },
+    actions: { updateBook, deleteBook: deleteBookAction },
   } = useStoreContext();
   const [editMode, setEditMode] = React.useState(false);
   const [openPortal, setOpenPortal] = React.useState(false);
@@ -46,11 +47,8 @@ export const useDetail = () => {
 
   const deleteBook = () => {
     if (!book) return;
-    makeRequest({
-      request: () => deleteBookById(book.id!),
-      onSuccess: () => setDeletedBook(true),
-      onError: () => toast.error("delete book error :(, please try again"),
-    });
+    deleteBookAction(book.id!);
+    setDeletedBook(true);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,11 +56,7 @@ export const useDetail = () => {
 
     if (!book) return;
 
-    makeRequest({
-      request: () => modifyBookById(book.id!, book),
-      onError: () => toast.error("modify book error :(, please try again"),
-      onSuccess: () => toast.success("modify book success"),
-    });
+    updateBook(book);
   };
 
   const closePortal = () => setOpenPortal(false);
@@ -72,6 +66,13 @@ export const useDetail = () => {
     const author = authors?.find((author) => author.id === Number(authorId));
 
     setBook({ ...book, author });
+  };
+
+  const handleTextChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value, name },
+    } = e;
+    setBook({ ...book, [name]: value });
   };
 
   return {
@@ -85,13 +86,13 @@ export const useDetail = () => {
       deletedBook,
     },
     operators: {
-      setBook,
       deleteBook,
       handleSubmit,
       closePortal,
       setOpenPortal,
       setEditMode,
       changeSelectValue,
+      handleTextChanged,
     },
   };
 };

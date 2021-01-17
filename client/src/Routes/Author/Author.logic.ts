@@ -7,7 +7,7 @@ export const useAuthor = () => {
     state: { authors },
     actions: { deleteAuthor, updateAuthor },
   } = useStoreContext();
-  const [editMode, setEditMode] = React.useState(-1);
+  const [editingAuthorId, setEditingAuthorId] = React.useState(-1);
   const [editedAuthor, setEditedAuthor] = React.useState<Author>();
 
   const removeAuthor = (id: number) => {
@@ -16,17 +16,17 @@ export const useAuthor = () => {
 
   const editAuthor = () => {
     updateAuthor(editedAuthor!);
-    setEditMode(-1);
+    setEditingAuthorId(-1);
   };
 
   const enableEditMode = (id: number) => {
-    setEditMode(id);
+    setEditingAuthorId(id);
     const author = authors.find((author) => author.id === id);
     setEditedAuthor(author);
   };
 
   return {
-    models: { editedAuthor, authors, editMode },
+    models: { editedAuthor, authors, editingAuthorId },
     operators: { setEditedAuthor, editAuthor, removeAuthor, enableEditMode },
   };
 };

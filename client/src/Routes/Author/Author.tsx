@@ -8,13 +8,12 @@ import {
   StyledTableHead,
 } from "./Author.style";
 
-export interface AuthorRouteProps {}
-
-export const AuthorRoute: React.FunctionComponent<AuthorRouteProps> = () => {
+export const AuthorRoute = () => {
   const {
-    models: { editedAuthor, authors, editMode },
+    models: { editedAuthor, authors, editingAuthorId },
     operators: { setEditedAuthor, editAuthor, enableEditMode, removeAuthor },
   } = useAuthor();
+
   const renderTextField = (field: "firstName" | "lastName") => {
     if (!editedAuthor) return;
 
@@ -45,19 +44,23 @@ export const AuthorRoute: React.FunctionComponent<AuthorRouteProps> = () => {
             </tr>
           </StyledTableHead>
           <tbody>
-            {authors.map(({ firstName, lastName, id }) => (
-              <tr key={id}>
+            {authors.map(({ firstName, lastName, id: authorId }) => (
+              <tr key={authorId}>
                 <td>
-                  {editMode === id ? renderTextField("firstName") : firstName}
+                  {editingAuthorId === authorId
+                    ? renderTextField("firstName")
+                    : firstName}
                 </td>
                 <td>
-                  {editMode === id ? renderTextField("lastName") : lastName}
+                  {editingAuthorId === authorId
+                    ? renderTextField("lastName")
+                    : lastName}
                 </td>
                 <td>
-                  {editMode !== -1 && editMode === id ? (
+                  {editingAuthorId !== -1 && editingAuthorId === authorId ? (
                     <StyledButton onClick={editAuthor}>Finish</StyledButton>
                   ) : (
-                    <StyledButton onClick={() => enableEditMode(id!)}>
+                    <StyledButton onClick={() => enableEditMode(authorId!)}>
                       Update
                     </StyledButton>
                   )}
@@ -65,8 +68,8 @@ export const AuthorRoute: React.FunctionComponent<AuthorRouteProps> = () => {
                 <td>
                   <StyledButton
                     color="error"
-                    onClick={() => removeAuthor(id!)}
-                    disabled={editMode !== -1}
+                    onClick={() => removeAuthor(authorId!)}
+                    disabled={editingAuthorId !== -1}
                   >
                     Remove
                   </StyledButton>

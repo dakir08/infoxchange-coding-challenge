@@ -26,13 +26,13 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
       deletedBook,
     },
     operators: {
-      setBook,
       closePortal,
       deleteBook,
       handleSubmit,
       setOpenPortal,
       setEditMode,
       changeSelectValue,
+      handleTextChanged,
     },
   } = useDetail();
 
@@ -67,10 +67,9 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
 
   const renderDeleteBook = () => (
     <>
-      {" "}
       <p>
-        Are you sure to delete this book?{" "}
-        <strong>This task can't be reverted</strong>
+        Are you sure to delete this book?
+        <strong> This task can't be reverted</strong>
       </p>
       <StyledButton
         color="error"
@@ -119,23 +118,21 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
             <h3>
               {editMode ? (
                 <StyledTextField
+                  name="name"
                   value={name}
-                  onChange={(e) =>
-                    setBook({ ...book, name: e.currentTarget.value })
-                  }
+                  onChange={handleTextChanged}
                 />
               ) : (
                 name
               )}
             </h3>
             <p>
-              ISBN:{" "}
+              ISBN:
               {editMode ? (
                 <StyledTextField
+                  name="isbn"
                   value={isbn}
-                  onChange={(e) =>
-                    setBook({ ...book, isbn: e.currentTarget.value })
-                  }
+                  onChange={handleTextChanged}
                 />
               ) : (
                 isbn

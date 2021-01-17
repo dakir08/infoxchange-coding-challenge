@@ -20,11 +20,11 @@ export const Book: React.FunctionComponent<BookProps> = ({
   bookId,
 }) => {
   const {
-    operators: { bookClicked },
+    operators: { handleBookClicked },
   } = useBook(bookId);
 
   return (
-    <StyledBook onClick={bookClicked}>
+    <StyledBook onClick={handleBookClicked}>
       <StyledBookImage src={coverImage ?? BookCoverImage} alt="book cover" />
       <StyledBookTitleWrapper>
         <StyledbookTitle>{title}</StyledbookTitle>

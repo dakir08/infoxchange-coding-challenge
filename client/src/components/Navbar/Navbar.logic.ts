@@ -16,6 +16,7 @@ export const useNavbar = () => {
     portalChildrenType,
     setPortalChildrenType,
   ] = React.useState<PortalChildren>();
+
   const { makeRequest } = useRequest<Author[]>();
   const { pathname } = useLocation();
 
@@ -34,7 +35,7 @@ export const useNavbar = () => {
       request: () => createNewBook(book),
       onError: () => toast.error("cannot create new book"),
       onSuccess: () => {
-        toast.success("create book successfully!");
+        toast.success("book created");
         setOpenPortal(false);
         createBook(book);
       },
@@ -46,7 +47,7 @@ export const useNavbar = () => {
       request: () => createNewAuthor(author),
       onError: () => toast.error("cannot create new author"),
       onSuccess: () => {
-        toast.success("create author successfully!");
+        toast.success("author created");
         setOpenPortal(false);
         createAuthor(author);
       },

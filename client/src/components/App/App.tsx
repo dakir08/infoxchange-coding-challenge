@@ -6,26 +6,23 @@ import { Navbar } from "../Navbar/Navbar";
 import { StyledApp, StyledAppContainer } from "./App.style";
 import { Toaster } from "react-hot-toast";
 import { AuthorRoute } from "../../Routes/Author/Author";
-import { useApp } from "./App.logic";
+import { useStoreContext } from "../../store/StoreContext";
 
-export interface AppProps {}
+export const App = () => {
+  const { actions } = useStoreContext();
 
-export const App: React.FunctionComponent<AppProps> = () => {
-  useApp();
+  React.useEffect(() => {
+    actions.fetchAuthors();
+  }, []);
+
   return (
     <StyledApp>
       <Navbar />
       <StyledAppContainer>
         <Switch>
-          <Route path="/detail/:id">
-            <DetailRoute />
-          </Route>
-          <Route path="/author">
-            <AuthorRoute />
-          </Route>
-          <Route path="/">
-            <HomeRoute />
-          </Route>
+          <Route exact path="/" component={HomeRoute} />
+          <Route path="/author" component={AuthorRoute} />
+          <Route path="/detail/:id" component={DetailRoute} />
         </Switch>
       </StyledAppContainer>
       <Toaster position="bottom-left" reverseOrder={false} />

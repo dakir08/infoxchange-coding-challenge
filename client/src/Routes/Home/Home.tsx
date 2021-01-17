@@ -3,9 +3,7 @@ import { Book } from "../../components/Book/Book";
 import { useHome } from "./Home.logic";
 import { StyledBookWrapper, StyledHome } from "./Home.style";
 
-export interface HomeRouteProps {}
-
-export const HomeRoute: React.FunctionComponent<HomeRouteProps> = () => {
+export const HomeRoute = () => {
   const {
     models: { books },
   } = useHome();
