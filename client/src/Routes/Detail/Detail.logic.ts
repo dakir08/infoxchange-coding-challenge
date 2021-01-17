@@ -1,10 +1,6 @@
 import { useHistory, useParams } from "react-router";
 import { Book } from "../../models/book";
-import {
-  deleteBookById,
-  getBookById,
-  modifyBookById,
-} from "../../services/bookServices";
+import { getBookById } from "../../services/bookServices";
 import { useRequest } from "../../utils/useRequest";
 import { toast } from "react-hot-toast";
 import { useStoreContext } from "../../store/StoreContext";

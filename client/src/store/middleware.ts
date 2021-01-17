@@ -17,11 +17,14 @@ export const applyMiddleware = (dispatch: (action: Action) => void) => (
 ) => {
   switch (action.type) {
     case ActionTypes.GET_BOOKS:
-      return getAllBook()
-        .then((res) =>
-          dispatch({ type: ActionTypes.GET_BOOKS_SUCCESS, payload: res })
-        )
-        .catch((_) => toast.error("cannot create new book, please try again"));
+      return toast.promise(getAllBook(), {
+        loading: "loading books...",
+        success: (data) => {
+          dispatch({ type: ActionTypes.GET_BOOKS_SUCCESS, payload: data });
+          return "fetch books success!";
+        },
+        error: "cannot fetch books data, please try again",
+      });
     case ActionTypes.UPDATE_BOOK:
       return modifyBookById(action.payload.id, action.payload)
         .then((_) => {
@@ -43,13 +46,15 @@ export const applyMiddleware = (dispatch: (action: Action) => void) => (
         })
         .catch((_) => toast.error("cannot delete author"));
     case ActionTypes.GET_AUTHORS:
-      return getAllAuthor()
-        .then((res) =>
-          dispatch({ type: ActionTypes.GET_AUTHORS_SUCCESS, payload: res })
-        )
-        .catch((_) =>
-          toast.error("cannot create new author, please try again")
-        );
+      return toast.promise(getAllAuthor(), {
+        loading: "loading authors...",
+        success: (data) => {
+          dispatch({ type: ActionTypes.GET_AUTHORS_SUCCESS, payload: data });
+          return "fetch authors success!";
+        },
+        error: "cannot fetch authors data, please try again",
+      });
+
     case ActionTypes.DELETE_AUTHOR:
       return deleteAuthorById(action.payload)
         .then((_) => {
