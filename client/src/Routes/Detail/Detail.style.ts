@@ -1,5 +1,7 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import BookCoverImage from "../../../public/book_placeholder.png";
+import { StyledButton } from "../../shared/Button";
 
 export const StyledDetail = styled.div`
   display: flex;
@@ -21,4 +23,9 @@ export const StyledDetailImage = styled.div`
 export const StyledDetailRightContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const StyledDetailCRUDButton = styled(StyledButton)`
+  max-width: 200px;
+  min-width: 150px;
 `;

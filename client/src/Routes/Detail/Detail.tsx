@@ -7,6 +7,7 @@ import { StyledTextField } from "../../shared/TextField";
 import { useDetail } from "./Detail.logic";
 import {
   StyledDetail,
+  StyledDetailCRUDButton,
   StyledDetailImage,
   StyledDetailRightContainer,
 } from "./Detail.style";
@@ -93,6 +94,17 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
     </>
   );
 
+  const renderButtonWhenEditModeEnabled = () =>
+    editMode ? (
+      <StyledDetailCRUDButton onClick={() => setEditMode(false)}>
+        Finish
+      </StyledDetailCRUDButton>
+    ) : (
+      <StyledDetailCRUDButton onMouseDown={() => setEditMode(true)}>
+        Modify Book
+      </StyledDetailCRUDButton>
+    );
+
   if (makingRequest || !book || !authors) return <div>loading...</div>;
 
   const { author, isbn, name } = book;
@@ -131,16 +143,8 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
             </p>
             <h4>Author:</h4>
             <p>{renderBookDetailWithEditableSelect()}</p>
-            {editMode ? (
-              <StyledButton onClick={() => setEditMode(false)}>
-                Finish
-              </StyledButton>
-            ) : (
-              <StyledButton onMouseDown={() => setEditMode(true)}>
-                Modify Book
-              </StyledButton>
-            )}
-            <StyledButton
+            {renderButtonWhenEditModeEnabled()}
+            <StyledDetailCRUDButton
               color="error"
               css={css`
                 margin-top: 0.5rem;
@@ -149,7 +153,7 @@ export const DetailRoute: React.FunctionComponent<DetailRouteProps> = () => {
               onClick={() => setOpenPortal(true)}
             >
               Delete Book
-            </StyledButton>
+            </StyledDetailCRUDButton>
           </StyledDetailRightContainer>
         </StyledDetail>
       </form>
